@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Inspect tool permissions and execution evidence from scripted Agent Firewall replays.">
+    <title>Agent Firewall</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="/"><span class="brand-icon" aria-hidden="true"></span>Agent Firewall</a>
+        <span class="local"><span aria-hidden="true"></span>Local simulation</span>
+      </div>
+    </header>
+    <main class="shell">
+      <section class="intro" aria-labelledby="title">
+        <p class="eyebrow">Scripted replay</p>
+        <h1 id="title">Tool call inspector</h1>
+        <p>Inspect permission decisions and verify which tools executed.</p>
+      </section>
+      <div class="controls">
+        <fieldset>
+          <legend>Scenario</legend>
+          <div class="options">
+            <label><input type="radio" name="scenario" value="suspicious" checked><span>Suspicious document</span></label>
+            <label><input type="radio" name="scenario" value="benign"><span>Benign document</span></label>
+          </div>
+        </fieldset>
+        <div class="actions">
+          <button id="download" class="secondary" type="button" disabled>Download JSON</button>
+          <button id="run" class="primary" type="button">Run replay</button>
+        </div>
+      </div>
+      <p class="run-status" id="status" role="status"></p>
+
+      <div id="report" hidden>
+        <div class="metrics" aria-label="Replay summary">
+          <div class="metric"><span>Tool calls proposed</span><strong id="proposed">0</strong></div>
+          <div class="metric"><span>Calls blocked</span><strong id="blocked">0</strong></div>
+          <div class="metric"><span>Adapter invocations</span><strong id="invocations">0</strong></div>
+          <div class="metric"><span>Sink writes</span><strong id="writes">0</strong></div>
+        </div>
+
+        <div class="panels">
+          <section class="panel document-panel" aria-labelledby="document-heading">
+            <h2 id="document-heading">Source document</h2>
+            <p class="panel-meta" id="document-id"></p>
+            <blockquote id="document-text"></blockquote>
+            <div class="signal" id="signal" hidden>
+              <code id="signal-code"></code>
+              <p>Deterministic test signal from the marked span.</p>
+            </div>
+          </section>
+
+          <section class="panel audit-panel" aria-labelledby="audit-heading">
+            <h2 id="audit-heading">Decision trail</h2>
+            <p class="panel-meta">Authorization and execution outcomes for each proposed call.</p>
+            <div id="decisions" class="decisions"></div>
+          </section>
+
+          <section class="panel evidence-panel" aria-labelledby="evidence-heading">
+            <h2 id="evidence-heading">Adapter evidence</h2>
+            <p class="panel-meta">Observed at tool entry and at the local sink.</p>
+            <ul id="evidence" class="evidence"></ul>
+          </section>
+        </div>
+
+        <footer class="report-footer">
+          <span id="invariants"></span>
+          <span>Schema <code id="schema"></code></span>
+          <span>Run <code id="run-id"></code></span>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
