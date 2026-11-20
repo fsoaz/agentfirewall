@@ -10,7 +10,8 @@ flowchart LR
     Gateway -->|Decision before dispatch| Journal["Run event journal"]
     Gateway -->|Allow| Adapter["Private adapter registry"]
     Adapter -->|Entry and write counts| Ledger["Run adapter activity"]
-    Adapter -->|Execution outcome| Journal
+    Adapter -->|Result or error| Gateway
+    Gateway -->|Execution outcome| Journal
     Journal --> Report["Versioned public report"]
     Ledger --> Report
     Report --> UI
@@ -28,7 +29,9 @@ The boundary assumes a trusted application process, runner implementation, and f
 
 ## Public report v1
 
-- `schemaVersion`, `scenarioId`, and `runId` identify the report and run.
+- `schemaVersion` is `1`, `scenarioId` identifies the replay, and `runId` is a server-generated UUID. The server releases in-memory run state after constructing the report.
 - `events` are ordered by one-based `sequence`. Execution events reference their authorization event by `decisionSequence`. Document and signal events reference the authorization event for the read by `readSequence`. Signal offsets index UTF-16 code units, with an exclusive end.
 - `adapterEffects` lists observed invocations and writes by fixture ID. IDs with zero activity are omitted from these lists.
 - `invariants` names each expected check and includes the resource ID, expected count, observed count, and pass status. The counts come from `adapterEffects`, with missing entries treated as zero.
+
+See the [HTTP contract and tool decisions](../standards/api_rules.md).

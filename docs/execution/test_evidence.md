@@ -1,6 +1,6 @@
 # Verification results
 
-Verified with Node.js 22.23.1 and Playwright Chromium.
+Verified with Node.js 22.23.1 and Playwright Chromium. The documentation update reran both automated checks.
 
 | Check | Result |
 | --- | --- |
