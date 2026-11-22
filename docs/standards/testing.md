@@ -1,6 +1,6 @@
 # Testing
 
-Run `npm test` after installing dependencies. For browser checks, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser`. Automated server checks use ephemeral loopback ports.
+Run `npm test` after installing dependencies. For browser checks, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser`. Automated server checks use ephemeral loopback ports. The browser check imports the same default HTTP server export that Vercel loads.
 
 | Layer | Coverage |
 | --- | --- |

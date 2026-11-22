@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart LR
-    UI["Local dashboard"] -->|"Scenario ID"| HTTP["POST /api/replays"]
+    UI["Dashboard"] -->|"Scenario ID"| HTTP["POST /api/replays"]
     HTTP --> Replay["Scripted runner"]
     Replay -->|"Proposed tool call"| Gateway["Gateway invoke"]
     Grant["Server-owned run grant"] --> Gateway
@@ -17,6 +17,10 @@ flowchart LR
     Report --> UI
 ```
 
+## HTTP entry point
+
+Vercel imports the default `http.Server` export from `src/server.ts` to serve the dashboard, its assets, and `POST /api/replays`. The module starts its own listener only when executed directly. Running `npm start` uses that path and binds the server to `127.0.0.1:3000`.
+
 ## Trust boundary
 
 The replay host creates each run and fixes its grant. Treat proposed tool names, arguments, and document content as untrusted data. The server resolves resource IDs against fixture metadata and checks an exact operation-and-ID permission. The runner cannot supply a grant in a tool call. The HTTP interface accepts only one of two predefined scenario IDs.
@@ -25,7 +29,7 @@ Validate each call before consulting the grant. Resolve metadata without reading
 
 The report includes reviewed public document text and fixture identifiers. It omits tool arguments, protected record contents, sink payloads, and raw errors. Read and publish effects originate from adapter activity rather than authorization decisions. The report and exported JSON describe the same run.
 
-The boundary assumes a trusted application process, runner implementation, and fixture store. It governs proposed tool calls routed through `invoke`. Arbitrary code running inside the Node process, direct access to local files, and text output from a live model are outside its enforcement boundary. The sink is local memory, and the service binds to loopback.
+The boundary assumes a trusted application process, runner implementation, and fixture store. It governs proposed tool calls routed through `invoke`. Arbitrary code running inside the Node process, direct access to local files, and text output from a live model are outside its enforcement boundary. The sink is held in memory for each replay.
 
 ## Public report v1
 
