@@ -84,9 +84,12 @@ export function createLocalServer() {
   });
 }
 
+const server = createLocalServer();
+export default server;
+
 if (import.meta.main) {
   const port = 3000;
-  createLocalServer().listen(port, "127.0.0.1", () => {
+  server.listen(port, "127.0.0.1", () => {
     console.log(`Agent Firewall is running at http://127.0.0.1:${port}`);
   });
 }

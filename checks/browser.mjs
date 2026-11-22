@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { once } from "node:events";
 import { readFile } from "node:fs/promises";
 import { chromium } from "playwright";
-import { createLocalServer } from "../src/server.ts";
+import server from "../src/server.ts";
 
 const canary = "SYNTHETIC_CANARY_AF_V01";
-const server = createLocalServer().listen(0, "127.0.0.1");
+server.listen(0, "127.0.0.1");
 let browser;
 
 try {
